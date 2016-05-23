@@ -1,4 +1,4 @@
-package novoda.com.sandbox;
+package com.novoda.sandbox;
 
 public class Application extends android.app.Application {
 

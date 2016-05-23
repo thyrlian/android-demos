@@ -1,3 +1,4 @@
+include ':Sandbox'
 include 'CarouselFragment'
 include 'CompassExample'
 include 'ContactSelector'

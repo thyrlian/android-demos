@@ -1,4 +1,4 @@
-package novoda.com.sandbox;
+package com.novoda.sandbox;
 
 import android.app.Activity;
 import android.content.Intent;

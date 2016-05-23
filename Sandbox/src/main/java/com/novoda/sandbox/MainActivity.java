@@ -1,4 +1,4 @@
-package novoda.com.sandbox;
+package com.novoda.sandbox;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
