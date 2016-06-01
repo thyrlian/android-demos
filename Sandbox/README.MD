@@ -84,6 +84,6 @@ Anyone of:
   - signin state should be persisted during rotation
 * DetailsActivity
   - ~~application name is null~~
-  - some applications could not be launched (e.g. SoundRecorder)
+  - ~~some applications could not be launched (e.g. SoundRecorder)~~
 * SignInActivity
   - empty space input should be trimmed off

@@ -1,9 +1,12 @@
 package com.novoda.sandbox;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -11,6 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Collections;
+import java.util.List;
 
 public class DetailsActivity extends Activity {
 
@@ -45,11 +51,17 @@ public class DetailsActivity extends Activity {
             findViewById(R.id.details_activity_launch_application).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchIntentForPackage = packageManager.getLaunchIntentForPackage(packageName);
-                    if (launchIntentForPackage == null) {
-                        Toast.makeText(DetailsActivity.this, "Uh oh, can't open this package!", Toast.LENGTH_SHORT).show();
+                    List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(new Intent().setPackage(packageName), 0);
+                    Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(packageManager));
+                    if(resolveInfos.size() > 0) {
+                        ActivityInfo activityInfo = resolveInfos.get(0).activityInfo;
+                        ComponentName componentName = new ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name);
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                        intent.setComponent(componentName);
+                        startActivity(intent);
                     } else {
-                        startActivity(launchIntentForPackage);
+                        Toast.makeText(DetailsActivity.this, "Uh oh, can't open this package!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
