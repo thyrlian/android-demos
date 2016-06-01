@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        resetSignInStateOnRotation(savedInstanceState);
-
         signInButton = (Button) findViewById(R.id.main_activity_sign_in_button);
         signInButton.setOnClickListener(onSignInOutClicked);
 
@@ -39,12 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.main_activity_random_numbers_passwords);
         listView.setAdapter(adapter);
-    }
-
-    private void resetSignInStateOnRotation(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            Application.setSignedOut();
-        }
     }
 
     private final View.OnClickListener onSignInOutClicked = new View.OnClickListener() {

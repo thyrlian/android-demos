@@ -81,7 +81,7 @@ Anyone of:
 ####Bugs
 
 * MainActivity
-  - signin state should be persisted during rotation
+  - ~~signin state should be persisted during rotation~~
 * DetailsActivity
   - ~~application name is null~~
   - ~~some applications could not be launched (e.g. SoundRecorder)~~
