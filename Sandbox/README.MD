@@ -77,3 +77,13 @@ Anyone of:
  ```
  
  *There may also be other non-documented features / acceptance criteria / bugs *
+
+####Bugs
+
+* MainActivity
+  - signin state should be persisted during rotation
+* DetailsActivity
+  - application name is null
+  - some applications could not be launched (e.g. SoundRecorder)
+* SignInActivity
+  - empty space input should be trimmed off
