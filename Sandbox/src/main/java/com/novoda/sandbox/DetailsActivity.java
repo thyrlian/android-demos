@@ -30,13 +30,14 @@ public class DetailsActivity extends Activity {
         final String packageName = getIntent().getStringExtra(EXTRA_PACKAGE_NAME);
 
         try {
-            ApplicationInfo applicationInfo = getPackageManager().getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-            Drawable drawable = applicationInfo.loadIcon(getPackageManager());
+            final PackageManager packageManager = getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            Drawable drawable = applicationInfo.loadIcon(packageManager);
 
             ImageView logoView = (ImageView) findViewById(R.id.details_activity_application_logo);
             logoView.setImageDrawable(drawable);
 
-            setItem("Name", applicationInfo.name, R.id.details_activity_application_name);
+            setItem("Name", applicationInfo.loadLabel(packageManager).toString(), R.id.details_activity_application_name);
             setItem("Data dir", applicationInfo.dataDir, R.id.details_activity_data_directory);
             setItem("Package", applicationInfo.packageName, R.id.details_activity_package_name);
             setItem("Target Sdk", String.valueOf(applicationInfo.targetSdkVersion), R.id.details_activity_target_sdk);
@@ -44,7 +45,7 @@ public class DetailsActivity extends Activity {
             findViewById(R.id.details_activity_launch_application).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchIntentForPackage = getPackageManager().getLaunchIntentForPackage(packageName);
+                    Intent launchIntentForPackage = packageManager.getLaunchIntentForPackage(packageName);
                     if (launchIntentForPackage == null) {
                         Toast.makeText(DetailsActivity.this, "Uh oh, can't open this package!", Toast.LENGTH_SHORT).show();
                     } else {
