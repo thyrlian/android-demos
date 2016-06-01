@@ -10,18 +10,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.novoda.sandbox.SignInActivity">
 
-    <EditText
-        android:id="@+id/sign_in_activity_username_field"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/sign_in_activity_username_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="User name" />
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
-    <EditText
-        android:id="@+id/sign_in_activity_password_field"
+        <EditText
+            android:id="@+id/sign_in_activity_username_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="User name" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/sign_in_activity_password_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
+        <EditText
+            android:id="@+id/sign_in_activity_password_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/sign_in_activity_submit_button"
