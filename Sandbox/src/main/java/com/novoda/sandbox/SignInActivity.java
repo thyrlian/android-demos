@@ -1,9 +1,9 @@
 package com.novoda.sandbox;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,10 +14,11 @@ public class SignInActivity extends Activity {
     private static final String ACTION = BuildConfig.APPLICATION_ID + ".SIGN_IN";
     private static final int MINIMUM_INPUT_LENGTH = 4;
 
-    private EditText userNameEditText;
+    private TextInputLayout usernameTextInputLayout;
+    private TextInputLayout passwordTextInputLayout;
+    private EditText usernameEditText;
     private EditText passwordEditText;
     private View submitButton;
-    private AlertDialog invalidCredentialsDialog;
 
     public static Intent createIntent() {
         return new Intent(ACTION);
@@ -28,23 +29,21 @@ public class SignInActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        userNameEditText = (EditText) findViewById(R.id.sign_in_activity_username_field);
+        usernameTextInputLayout = (TextInputLayout) findViewById(R.id.sign_in_activity_username_wrapper);
+        passwordTextInputLayout = (TextInputLayout) findViewById(R.id.sign_in_activity_password_wrapper);
+        usernameEditText = (EditText) findViewById(R.id.sign_in_activity_username_field);
         passwordEditText = (EditText) findViewById(R.id.sign_in_activity_password_field);
-
-        userNameEditText.addTextChangedListener(signInEnablingSubmitTextWatcher);
-        passwordEditText.addTextChangedListener(signInEnablingSubmitTextWatcher);
-
-        invalidCredentialsDialog = new AlertDialog.Builder(SignInActivity.this).setMessage("Oops something went wrong, is your username and password more than 4 characters?")
-                .setNeutralButton("ok", null)
-                .create();
-
         submitButton = findViewById(R.id.sign_in_activity_submit_button);
+
+        usernameEditText.addTextChangedListener(signInEnablingSubmitTextWatcher);
+        passwordEditText.addTextChangedListener(signInEnablingSubmitTextWatcher);
         submitButton.setEnabled(false);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (credentialsAreInvalid()) {
-                    invalidCredentialsDialog.show();
+                clearValidationError();
+                if (isAnyInputInvalid()) {
+                    showValidationError();
                 } else {
                     Application.setSignedIn();
                     finish();
@@ -54,9 +53,34 @@ public class SignInActivity extends Activity {
 
     }
 
-    private boolean credentialsAreInvalid() {
-        return userNameEditText.getText().toString().length() < MINIMUM_INPUT_LENGTH
-                || passwordEditText.getText().toString().length() < MINIMUM_INPUT_LENGTH;
+    private boolean isUsernameInvalid() {
+        return usernameEditText.getText().toString().length() < MINIMUM_INPUT_LENGTH;
+    }
+
+    private boolean isPasswordInvalid() {
+        return passwordEditText.getText().toString().length() < MINIMUM_INPUT_LENGTH;
+    }
+
+    private boolean isAnyInputInvalid() {
+        return isUsernameInvalid() || isPasswordInvalid();
+    }
+
+    private void clearValidationError() {
+        usernameTextInputLayout.setError(null);
+        passwordTextInputLayout.setError(null);
+        usernameTextInputLayout.setErrorEnabled(false);
+        passwordTextInputLayout.setErrorEnabled(false);
+    }
+
+    private void showValidationError() {
+        if (isUsernameInvalid()) {
+            usernameTextInputLayout.setErrorEnabled(true);
+            usernameTextInputLayout.setError("Username must be more than 4 characters");
+        }
+        if (isPasswordInvalid()) {
+            passwordTextInputLayout.setErrorEnabled(true);
+            passwordTextInputLayout.setError("Password must be more than 4 characters");
+        }
     }
 
     private TextWatcher signInEnablingSubmitTextWatcher = new TextWatcher() {
@@ -67,7 +91,7 @@ public class SignInActivity extends Activity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            submitButton.setEnabled(userNameEditText.getText().length() > 0 && passwordEditText.getText().length() > 0);
+            submitButton.setEnabled(usernameEditText.getText().length() > 0 && passwordEditText.getText().length() > 0);
         }
 
         @Override
