@@ -2,6 +2,7 @@ package com.novoda.sandbox;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
@@ -73,13 +74,14 @@ public class SignInActivity extends Activity {
     }
 
     private void showValidationError() {
+        Resources res = getResources();
         if (isUsernameInvalid()) {
             usernameTextInputLayout.setErrorEnabled(true);
-            usernameTextInputLayout.setError("Username must be more than 4 characters");
+            usernameTextInputLayout.setError(String.format(res.getString(R.string.username_validation_error), MINIMUM_INPUT_LENGTH));
         }
         if (isPasswordInvalid()) {
             passwordTextInputLayout.setErrorEnabled(true);
-            passwordTextInputLayout.setError("Password must be more than 4 characters");
+            passwordTextInputLayout.setError(String.format(res.getString(R.string.password_validation_error), MINIMUM_INPUT_LENGTH));
         }
     }
 

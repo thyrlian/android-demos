@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -41,7 +42,7 @@ public class DetailsActivity extends Activity {
             applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(DetailsActivity.this, "Uh oh, can't load this package!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DetailsActivity.this, getResources().getString(R.string.error_load_package), Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -51,10 +52,11 @@ public class DetailsActivity extends Activity {
         ImageView logoView = (ImageView) findViewById(R.id.details_activity_application_logo);
         logoView.setImageDrawable(drawable);
 
-        setItem("Name", applicationInfo.loadLabel(packageManager).toString(), R.id.details_activity_application_name);
-        setItem("Data dir", applicationInfo.dataDir, R.id.details_activity_data_directory);
-        setItem("Package", applicationInfo.packageName, R.id.details_activity_package_name);
-        setItem("Target Sdk", String.valueOf(applicationInfo.targetSdkVersion), R.id.details_activity_target_sdk);
+        Resources res = getResources();
+        setItem(res.getString(R.string.item_key_name), applicationInfo.loadLabel(packageManager).toString(), R.id.details_activity_application_name);
+        setItem(res.getString(R.string.item_key_dir), applicationInfo.dataDir, R.id.details_activity_data_directory);
+        setItem(res.getString(R.string.item_key_package), applicationInfo.packageName, R.id.details_activity_package_name);
+        setItem(res.getString(R.string.item_key_sdk), String.valueOf(applicationInfo.targetSdkVersion), R.id.details_activity_target_sdk);
 
         findViewById(R.id.details_activity_launch_application).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +71,7 @@ public class DetailsActivity extends Activity {
                     intent.setComponent(componentName);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(DetailsActivity.this, "Uh oh, can't open this package!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsActivity.this, getResources().getString(R.string.error_open_package), Toast.LENGTH_SHORT).show();
                 }
             }
         });

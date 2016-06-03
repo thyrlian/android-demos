@@ -39,7 +39,7 @@
         android:id="@+id/details_activity_launch_application"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Launch application" />
+        android:text="@string/launch_application_button" />
 
 </LinearLayout>
 

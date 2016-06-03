@@ -71,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateSignInState() {
-        signInButton.setText(Application.isSignedIn() ? "Sign out" : "Sign in");
+        String signInText = getResources().getString(R.string.sign_in_button);
+        String signOutText = getResources().getString(R.string.sign_out_button);
+        signInButton.setText(Application.isSignedIn() ? signOutText : signInText);
     }
 
     private void showData() {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Global -->
+    <string name="app_name">Sandbox</string>
+
+    <!-- Main -->
+    <string name="sign_in_button">Einloggen</string>
+    <string name="sign_out_button">Ausloggen</string>
+
+    <!-- SignIn -->
+    <string name="username_hint">Benutzername</string>
+    <string name="password_hint">Passwort</string>
+    <string name="submit_button">Absenden</string>
+    <string name="username_validation_error">Der Benutzername muss mindestens %d Zeichen lang sein</string>
+    <string name="password_validation_error">Das Passwort muss mindestens %d Zeichen lang sein</string>
+
+    <!-- Details -->
+    <string name="item_key_name">Name</string>
+    <string name="item_key_dir">Datan Verz</string>
+    <string name="item_key_package">Package</string>
+    <string name="item_key_sdk">Ziel SDK</string>
+    <string name="launch_application_button">Starten die Application</string>
+    <string name="error_load_package">Uh oh, Die Applikation lädt nicht!</string>
+    <string name="error_open_package">Uh oh, Die Applikation startet nicht!</string>
+</resources>
