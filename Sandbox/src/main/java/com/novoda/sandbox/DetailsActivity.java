@@ -34,41 +34,45 @@ public class DetailsActivity extends Activity {
         setContentView(R.layout.activity_details);
 
         final String packageName = getIntent().getStringExtra(EXTRA_PACKAGE_NAME);
+        final PackageManager packageManager = getPackageManager();
+        ApplicationInfo applicationInfo = null;
 
         try {
-            final PackageManager packageManager = getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-            Drawable drawable = applicationInfo.loadIcon(packageManager);
-
-            ImageView logoView = (ImageView) findViewById(R.id.details_activity_application_logo);
-            logoView.setImageDrawable(drawable);
-
-            setItem("Name", applicationInfo.loadLabel(packageManager).toString(), R.id.details_activity_application_name);
-            setItem("Data dir", applicationInfo.dataDir, R.id.details_activity_data_directory);
-            setItem("Package", applicationInfo.packageName, R.id.details_activity_package_name);
-            setItem("Target Sdk", String.valueOf(applicationInfo.targetSdkVersion), R.id.details_activity_target_sdk);
-
-            findViewById(R.id.details_activity_launch_application).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(new Intent().setPackage(packageName), 0);
-                    Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(packageManager));
-                    if(resolveInfos.size() > 0) {
-                        ActivityInfo activityInfo = resolveInfos.get(0).activityInfo;
-                        ComponentName componentName = new ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name);
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                        intent.setComponent(componentName);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(DetailsActivity.this, "Uh oh, can't open this package!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
+            applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            Toast.makeText(DetailsActivity.this, "Uh oh, can't load this package!", Toast.LENGTH_SHORT).show();
+            finish();
         }
+
+        @SuppressWarnings("ConstantConditions")
+        Drawable drawable = applicationInfo.loadIcon(packageManager);
+
+        ImageView logoView = (ImageView) findViewById(R.id.details_activity_application_logo);
+        logoView.setImageDrawable(drawable);
+
+        setItem("Name", applicationInfo.loadLabel(packageManager).toString(), R.id.details_activity_application_name);
+        setItem("Data dir", applicationInfo.dataDir, R.id.details_activity_data_directory);
+        setItem("Package", applicationInfo.packageName, R.id.details_activity_package_name);
+        setItem("Target Sdk", String.valueOf(applicationInfo.targetSdkVersion), R.id.details_activity_target_sdk);
+
+        findViewById(R.id.details_activity_launch_application).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(new Intent().setPackage(packageName), 0);
+                Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(packageManager));
+                if(resolveInfos.size() > 0) {
+                    ActivityInfo activityInfo = resolveInfos.get(0).activityInfo;
+                    ComponentName componentName = new ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name);
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                    intent.setComponent(componentName);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(DetailsActivity.this, "Uh oh, can't open this package!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void setItem(String keyName, String value, @IdRes int id) {
