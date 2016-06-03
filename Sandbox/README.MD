@@ -86,4 +86,4 @@ Anyone of:
   - ~~application name is null~~
   - ~~some applications could not be launched (e.g. SoundRecorder)~~
 * SignInActivity
-  - empty space input should be trimmed off
+  - ~~empty space input should be trimmed off~~
