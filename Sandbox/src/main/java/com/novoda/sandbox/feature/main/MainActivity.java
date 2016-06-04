@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        ListView listView = (ListView) findViewById(R.id.main_activity_random_numbers_passwords);
+        ListView listView = (ListView) findViewById(R.id.packages_list);
         listView.setAdapter(adapter);
     }
 
