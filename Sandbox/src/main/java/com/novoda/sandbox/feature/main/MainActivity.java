@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.novoda.sandbox.global.Application;
+import com.novoda.sandbox.global.SandboxApplication;
 import com.novoda.sandbox.R;
 import com.novoda.sandbox.feature.details.DetailsActivity;
 import com.novoda.sandbox.feature.login.SignInActivity;
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private final View.OnClickListener onSignInOutClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (Application.isSignedIn()) {
-                Application.setSignedOut();
+            if (SandboxApplication.isSignedIn()) {
+                SandboxApplication.setSignedOut();
                 refreshUi();
             } else {
                 startActivity(SignInActivity.createIntent());
@@ -78,13 +78,13 @@ public class MainActivity extends AppCompatActivity {
     private void updateSignInState() {
         String signInText = getResources().getString(R.string.sign_in_button);
         String signOutText = getResources().getString(R.string.sign_out_button);
-        signInButton.setText(Application.isSignedIn() ? signOutText : signInText);
+        signInButton.setText(SandboxApplication.isSignedIn() ? signOutText : signInText);
     }
 
     private void showData() {
         adapter.clear();
         List<ApplicationInfo> installedApplications = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-        if (Application.isSignedIn()) {
+        if (SandboxApplication.isSignedIn()) {
             for (ApplicationInfo application : installedApplications) {
                 adapter.add(application.packageName);
             }

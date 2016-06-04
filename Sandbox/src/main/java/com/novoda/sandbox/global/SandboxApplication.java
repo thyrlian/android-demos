@@ -1,6 +1,8 @@
 package com.novoda.sandbox.global;
 
-public class Application extends android.app.Application {
+import android.app.Application;
+
+public class SandboxApplication extends Application {
 
     private static boolean signedIn = false;
 
