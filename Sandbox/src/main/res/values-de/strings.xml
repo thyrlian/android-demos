@@ -17,7 +17,7 @@
     <!-- Details -->
     <string name="item_key_name">Name</string>
     <string name="item_key_dir">Datan Verz</string>
-    <string name="item_key_package">Package</string>
+    <string name="item_key_pkg">Package</string>
     <string name="item_key_sdk">Ziel SDK</string>
     <string name="launch_application_button">Starten die Application</string>
     <string name="error_load_package">Uh oh, Die Applikation lädt nicht!</string>

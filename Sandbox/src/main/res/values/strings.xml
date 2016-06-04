@@ -17,7 +17,7 @@
     <!-- Details -->
     <string name="item_key_name">Name</string>
     <string name="item_key_dir">Data Dir</string>
-    <string name="item_key_package">Package</string>
+    <string name="item_key_pkg">Package</string>
     <string name="item_key_sdk">Target SDK</string>
     <string name="launch_application_button">Launch application</string>
     <string name="error_load_package">Uh oh, can\'t load this package!</string>

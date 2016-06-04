@@ -11,27 +11,27 @@
     tools:context=".feature.details.DetailsActivity">
 
     <ImageView
-        android:id="@+id/details_activity_application_logo"
+        android:id="@+id/details_activity_app_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/details_activity_application_name"
+        android:id="@+id/details_activity_app_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/details_activity_package_name"
+        android:id="@+id/details_activity_app_pkg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/details_activity_data_directory"
+        android:id="@+id/details_activity_app_dir"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/details_activity_target_sdk"
+        android:id="@+id/details_activity_app_sdk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

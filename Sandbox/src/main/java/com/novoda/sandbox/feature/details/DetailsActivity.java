@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +16,7 @@ import android.widget.Toast;
 
 import com.novoda.sandbox.BuildConfig;
 import com.novoda.sandbox.R;
+import com.novoda.sandbox.data.AppInfo;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,32 +37,27 @@ public class DetailsActivity extends Activity {
         setContentView(R.layout.activity_details);
 
         final String packageName = getIntent().getStringExtra(EXTRA_PACKAGE_NAME);
-        final PackageManager packageManager = getPackageManager();
-        ApplicationInfo applicationInfo = null;
-
+        AppInfo appInfo = null;
         try {
-            applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            appInfo = new AppInfo.Builder().parse(this, packageName).build();
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             Toast.makeText(DetailsActivity.this, getResources().getString(R.string.error_load_package), Toast.LENGTH_SHORT).show();
             finish();
         }
-
-        @SuppressWarnings("ConstantConditions")
-        Drawable drawable = applicationInfo.loadIcon(packageManager);
-
-        ImageView logoView = (ImageView) findViewById(R.id.details_activity_application_logo);
-        logoView.setImageDrawable(drawable);
-
-        Resources res = getResources();
-        setItem(res.getString(R.string.item_key_name), applicationInfo.loadLabel(packageManager).toString(), R.id.details_activity_application_name);
-        setItem(res.getString(R.string.item_key_dir), applicationInfo.dataDir, R.id.details_activity_data_directory);
-        setItem(res.getString(R.string.item_key_package), applicationInfo.packageName, R.id.details_activity_package_name);
-        setItem(res.getString(R.string.item_key_sdk), String.valueOf(applicationInfo.targetSdkVersion), R.id.details_activity_target_sdk);
+        if (appInfo != null) {
+            ImageView logoView = (ImageView) findViewById(R.id.details_activity_app_icon);
+            logoView.setImageDrawable(appInfo.getIcon());
+            setItem(R.string.item_key_name, appInfo.getName(), R.id.details_activity_app_name);
+            setItem(R.string.item_key_dir, appInfo.getDir(), R.id.details_activity_app_dir);
+            setItem(R.string.item_key_pkg, appInfo.getPkg(), R.id.details_activity_app_pkg);
+            setItem(R.string.item_key_sdk, appInfo.getSdk(), R.id.details_activity_app_sdk);
+        }
 
         findViewById(R.id.details_activity_launch_application).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PackageManager packageManager = getPackageManager();
                 List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(new Intent().setPackage(packageName), 0);
                 Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(packageManager));
                 if(resolveInfos.size() > 0) {
@@ -80,8 +74,9 @@ public class DetailsActivity extends Activity {
         });
     }
 
-    private void setItem(String keyName, String value, @IdRes int id) {
+    private void setItem(@StringRes int string, String value, @IdRes int id) {
+        String key = getResources().getString(string);
         TextView name = (TextView) findViewById(id);
-        name.setText(keyName + " : " + value);
+        name.setText(key + " : " + value);
     }
 }
