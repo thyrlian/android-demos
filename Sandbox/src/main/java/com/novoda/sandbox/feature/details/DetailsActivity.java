@@ -27,16 +27,19 @@ public class DetailsActivity extends Activity {
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
 
     public static Intent createIntent(String packageName) {
-        return new Intent(ACTION)
-                .putExtra(EXTRA_PACKAGE_NAME, packageName);
+        return new Intent(ACTION).putExtra(EXTRA_PACKAGE_NAME, packageName);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        String packageName = getIntent().getStringExtra(EXTRA_PACKAGE_NAME);
+        showAppInfo(packageName);
+        setLaunchAppButton(packageName);
+    }
 
-        final String packageName = getIntent().getStringExtra(EXTRA_PACKAGE_NAME);
+    private void showAppInfo(String packageName) {
         AppInfo appInfo = null;
         try {
             appInfo = new AppInfo.Builder().parse(this, packageName).build();
@@ -53,7 +56,9 @@ public class DetailsActivity extends Activity {
             setItem(R.string.item_key_pkg, appInfo.getPkg(), R.id.details_activity_app_pkg);
             setItem(R.string.item_key_sdk, appInfo.getSdk(), R.id.details_activity_app_sdk);
         }
+    }
 
+    private void setLaunchAppButton(final String packageName) {
         findViewById(R.id.details_activity_launch_application).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,12 +66,7 @@ public class DetailsActivity extends Activity {
                 List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(new Intent().setPackage(packageName), 0);
                 Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(packageManager));
                 if(resolveInfos.size() > 0) {
-                    ActivityInfo activityInfo = resolveInfos.get(0).activityInfo;
-                    ComponentName componentName = new ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name);
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                    intent.setComponent(componentName);
-                    startActivity(intent);
+                    startActivity(createIntentForOther(resolveInfos.get(0).activityInfo));
                 } else {
                     Toast.makeText(DetailsActivity.this, getResources().getString(R.string.error_open_package), Toast.LENGTH_SHORT).show();
                 }
@@ -78,5 +78,17 @@ public class DetailsActivity extends Activity {
         String key = getResources().getString(string);
         TextView name = (TextView) findViewById(id);
         name.setText(key + " : " + value);
+    }
+
+    private static Intent createIntentForOther(ComponentName componentName) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        intent.setComponent(componentName);
+        return intent;
+    }
+
+    private static Intent createIntentForOther(ActivityInfo activityInfo) {
+        ComponentName componentName = new ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name);
+        return createIntentForOther(componentName);
     }
 }
