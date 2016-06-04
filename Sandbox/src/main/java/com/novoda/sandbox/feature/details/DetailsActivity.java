@@ -1,4 +1,4 @@
-package com.novoda.sandbox;
+package com.novoda.sandbox.feature.details;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.novoda.sandbox.BuildConfig;
+import com.novoda.sandbox.R;
 
 import java.util.Collections;
 import java.util.List;

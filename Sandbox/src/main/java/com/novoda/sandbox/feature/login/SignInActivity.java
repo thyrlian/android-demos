@@ -1,4 +1,4 @@
-package com.novoda.sandbox;
+package com.novoda.sandbox.feature.login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+
+import com.novoda.sandbox.global.Application;
+import com.novoda.sandbox.BuildConfig;
+import com.novoda.sandbox.R;
 
 public class SignInActivity extends Activity {
 

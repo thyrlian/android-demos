@@ -1,4 +1,4 @@
-package com.novoda.sandbox;
+package com.novoda.sandbox.feature.main;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.novoda.sandbox.global.Application;
+import com.novoda.sandbox.R;
+import com.novoda.sandbox.feature.details.DetailsActivity;
+import com.novoda.sandbox.feature.login.SignInActivity;
 
 import java.util.List;
 
