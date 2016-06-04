@@ -4,7 +4,17 @@ import android.app.Application;
 
 public class SandboxApplication extends Application {
 
-    private static boolean signedIn = false;
+    private static boolean signedIn;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        initialize();
+    }
+
+    private void initialize() {
+        signedIn = false;
+    }
 
     public static void setSignedIn() {
         signedIn = true;
