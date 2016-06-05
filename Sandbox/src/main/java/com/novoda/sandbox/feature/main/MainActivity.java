@@ -1,95 +1,25 @@
 package com.novoda.sandbox.feature.main;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
-import com.novoda.sandbox.global.SandboxApplication;
 import com.novoda.sandbox.R;
-import com.novoda.sandbox.feature.details.DetailsActivity;
-import com.novoda.sandbox.feature.login.SignInActivity;
-
-import java.util.List;
+import com.novoda.sandbox.util.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ArrayAdapter<String> adapter;
-    private Button signInButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
-        signInButton = (Button) findViewById(R.id.main_activity_sign_in_button);
-        signInButton.setOnClickListener(onSignInOutClicked);
-
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1) {
-            @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                view.setOnClickListener(onItemClicked);
-                view.setTag(position);
-                return view;
-            }
-        };
-
-        ListView listView = (ListView) findViewById(R.id.packages_list);
-        listView.setAdapter(adapter);
-    }
-
-    private final View.OnClickListener onSignInOutClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (SandboxApplication.isSignedIn()) {
-                SandboxApplication.setSignedOut();
-                refreshUi();
-            } else {
-                startActivity(SignInActivity.createIntent());
-            }
+        // Set up view
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (mainFragment == null) {
+            mainFragment = MainFragment.newInstance();
         }
-    };
+        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), mainFragment, R.id.contentFrame);
 
-    private final View.OnClickListener onItemClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String packageName = adapter.getItem((Integer) v.getTag());
-            startActivity(DetailsActivity.createIntent(packageName));
-        }
-    };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshUi();
-    }
-
-    private void refreshUi() {
-        updateSignInState();
-        showData();
-    }
-
-    private void updateSignInState() {
-        String signInText = getResources().getString(R.string.sign_in_button);
-        String signOutText = getResources().getString(R.string.sign_out_button);
-        signInButton.setText(SandboxApplication.isSignedIn() ? signOutText : signInText);
-    }
-
-    private void showData() {
-        adapter.clear();
-        List<ApplicationInfo> installedApplications = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-        if (SandboxApplication.isSignedIn()) {
-            for (ApplicationInfo application : installedApplications) {
-                adapter.add(application.packageName);
-            }
-        } else {
-            adapter.add(installedApplications.get(0).packageName);
-        }
+        // Set up presenter
+        new MainPresenter(mainFragment, getApplicationContext());
     }
 }
