@@ -1,4 +1,4 @@
-package com.novoda.sandbox.global;
+package com.novoda.sandbox;
 
 import android.app.Application;
 

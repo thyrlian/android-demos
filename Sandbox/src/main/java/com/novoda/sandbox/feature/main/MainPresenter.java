@@ -5,7 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
-import com.novoda.sandbox.global.SandboxApplication;
+import com.novoda.sandbox.SandboxApplication;
 
 import java.util.List;
 

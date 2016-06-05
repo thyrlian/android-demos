@@ -10,7 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
-import com.novoda.sandbox.global.SandboxApplication;
+import com.novoda.sandbox.SandboxApplication;
 import com.novoda.sandbox.BuildConfig;
 import com.novoda.sandbox.R;
 

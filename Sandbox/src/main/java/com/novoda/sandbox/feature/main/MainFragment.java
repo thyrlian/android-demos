@@ -16,7 +16,7 @@ import android.widget.ListView;
 import com.novoda.sandbox.R;
 import com.novoda.sandbox.feature.details.DetailsActivity;
 import com.novoda.sandbox.feature.login.SignInActivity;
-import com.novoda.sandbox.global.SandboxApplication;
+import com.novoda.sandbox.SandboxApplication;
 
 import java.util.List;
 
