@@ -1,4 +1,4 @@
-package com.novoda.sandbox.feature.login;
+package com.novoda.sandbox.feature.signin;
 
 import com.novoda.sandbox.BasePresenter;
 import com.novoda.sandbox.BaseView;

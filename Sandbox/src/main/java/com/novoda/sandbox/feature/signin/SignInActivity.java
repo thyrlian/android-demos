@@ -1,4 +1,4 @@
-package com.novoda.sandbox.feature.login;
+package com.novoda.sandbox.feature.signin;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

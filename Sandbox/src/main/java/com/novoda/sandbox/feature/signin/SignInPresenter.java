@@ -1,4 +1,4 @@
-package com.novoda.sandbox.feature.login;
+package com.novoda.sandbox.feature.signin;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;

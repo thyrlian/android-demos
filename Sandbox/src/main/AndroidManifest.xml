@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".feature.login.SignInActivity">
+        <activity android:name=".feature.signin.SignInActivity">
             <intent-filter>
                 <action android:name="${applicationId}.SIGN_IN" />
                 <category android:name="android.intent.category.DEFAULT" />
