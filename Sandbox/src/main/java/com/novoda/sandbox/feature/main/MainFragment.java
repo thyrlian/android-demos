@@ -117,6 +117,7 @@ public class MainFragment extends Fragment implements MainContract.View {
         public void onClick(View view) {
             if (SandboxApplication.isSignedIn()) {
                 SandboxApplication.setSignedOut();
+                updateSignInState();
                 ApplicationInfo installedApplication = presenter.getInstalledApplication();
                 if (installedApplication != null) {
                     showSinglePackage(presenter.getInstalledApplication());
