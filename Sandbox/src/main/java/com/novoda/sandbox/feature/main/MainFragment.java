@@ -14,9 +14,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.novoda.sandbox.R;
-import com.novoda.sandbox.feature.details.DetailsActivity;
-import com.novoda.sandbox.feature.login.SignInActivity;
 import com.novoda.sandbox.SandboxApplication;
+import com.novoda.sandbox.feature.details.DetailsActivity;
+import com.novoda.sandbox.feature.login.SignInPresenter;
 
 import java.util.List;
 
@@ -122,7 +122,7 @@ public class MainFragment extends Fragment implements MainContract.View {
                     showSinglePackage(presenter.getInstalledApplication());
                 }
             } else {
-                startActivity(SignInActivity.createIntent());
+                startActivity(SignInPresenter.createIntent());
             }
         }
     }
