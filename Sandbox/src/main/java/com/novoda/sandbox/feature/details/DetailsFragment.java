@@ -2,7 +2,6 @@ package com.novoda.sandbox.feature.details;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -10,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +24,12 @@ import static com.novoda.sandbox.util.Preconditions.checkNotNull;
  */
 public class DetailsFragment extends Fragment implements DetailsContract.View {
     private DetailsContract.Presenter presenter;
-    private View root;
+    private ImageView logoView;
+    private TextView appNameTextView;
+    private TextView appDirTextView;
+    private TextView appPkgTextView;
+    private TextView appSdkTextView;
+    private Button launchAppButton;
 
     public static DetailsFragment newInstance() {
         return new DetailsFragment();
@@ -47,7 +52,15 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.details_fragment, container, false);
+        View root = inflater.inflate(R.layout.details_fragment, container, false);
+
+        logoView = (ImageView) root.findViewById(R.id.details_activity_app_icon);
+        appNameTextView = (TextView) root.findViewById(R.id.details_activity_app_name);
+        appDirTextView = (TextView) root.findViewById(R.id.details_activity_app_dir);
+        appPkgTextView = (TextView) root.findViewById(R.id.details_activity_app_pkg);
+        appSdkTextView = (TextView) root.findViewById(R.id.details_activity_app_sdk);
+        launchAppButton = (Button) root.findViewById(R.id.details_activity_launch_application);
+
         return root;
     }
 
@@ -55,12 +68,11 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     public void showAppInfo(String packageName) {
         AppInfo appInfo = presenter.getAppInfo(getContext());
         if (appInfo != null) {
-            ImageView logoView = (ImageView) root.findViewById(R.id.details_activity_app_icon);
             logoView.setImageDrawable(appInfo.getIcon());
-            setItem(R.string.item_key_name, appInfo.getName(), R.id.details_activity_app_name);
-            setItem(R.string.item_key_dir, appInfo.getDir(), R.id.details_activity_app_dir);
-            setItem(R.string.item_key_pkg, appInfo.getPkg(), R.id.details_activity_app_pkg);
-            setItem(R.string.item_key_sdk, appInfo.getSdk(), R.id.details_activity_app_sdk);
+            setItem(R.string.item_key_name, appInfo.getName(), appNameTextView);
+            setItem(R.string.item_key_dir, appInfo.getDir(), appDirTextView);
+            setItem(R.string.item_key_pkg, appInfo.getPkg(), appPkgTextView);
+            setItem(R.string.item_key_sdk, appInfo.getSdk(), appSdkTextView);
         } else {
             getActivity().finish();
         }
@@ -83,7 +95,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
 
     @Override
     public void setLaunchAppButton() {
-        root.findViewById(R.id.details_activity_launch_application).setOnClickListener(new View.OnClickListener() {
+        launchAppButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.launchApp(getContext());
@@ -91,9 +103,8 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
         });
     }
 
-    private void setItem(@StringRes int string, String value, @IdRes int id) {
+    private void setItem(@StringRes int string, String value, TextView textView) {
         String key = getResources().getString(string);
-        TextView name = (TextView) root.findViewById(id);
-        name.setText(key + " : " + value);
+        textView.setText(key + " : " + value);
     }
 }
