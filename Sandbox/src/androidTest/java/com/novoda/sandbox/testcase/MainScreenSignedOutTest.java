@@ -4,27 +4,15 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.novoda.sandbox.R;
 import com.novoda.sandbox.feature.main.MainActivity;
-import com.novoda.sandbox.util.AppAssistant;
-import com.novoda.sandbox.util.PackageCompanion;
+import com.novoda.sandbox.screen.DetailsScreen;
+import com.novoda.sandbox.screen.MainScreen;
+import com.novoda.sandbox.screen.SignInScreen;
 import com.novoda.sandbox.util.TestRuleHelper;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 
 /**
  * Created by jingli on 06/06/16.
@@ -37,6 +25,10 @@ public class MainScreenSignedOutTest {
     @Rule
     public ActivityTestRule<MainActivity> mainActivityTestRule = TestRuleHelper.createTestRuleWithLoginState(MainActivity.class, false);
 
+    private MainScreen mainScreen = new MainScreen();
+    private DetailsScreen detailsScreen = new DetailsScreen();
+    private SignInScreen signInScreen = new SignInScreen();
+
     /**
      * Given I am viewing the apps
      * When I am signed out
@@ -44,8 +36,8 @@ public class MainScreenSignedOutTest {
      */
     @Test
     public void showOnlyOneAppWhenSignedOut() {
-        onView(withText(AppAssistant.getString(R.string.sign_in_button))).check(matches(isDisplayed()));
-        assertEquals(1, PackageCompanion.getCountFromList());
+        mainScreen.verifyIsSignedOut();
+        mainScreen.verifyPackagesCount(1);
     }
 
     /**
@@ -56,10 +48,10 @@ public class MainScreenSignedOutTest {
     @Test
     public void goToAppDetailsWhenClickApp() {
         int position = 0;
-        String packageName = PackageCompanion.getTextInList(position);
-        onData(allOf(is(instanceOf(String.class)))).inAdapterView(withId(R.id.packages_list)).atPosition(position).perform(click());
-        onView(withId(R.id.details_activity_launch_application)).check(matches(isDisplayed()));
-        onView(withId(R.id.details_activity_app_pkg)).check(matches(withText(AppAssistant.getString(R.string.item_key_pkg) + " : " + packageName)));
+        String packageName = mainScreen.getPackageName(position);
+        mainScreen.clickPackage(position);
+        detailsScreen.verifyIsOnDetailsScreen();
+        detailsScreen.verifyPackageName(packageName);
     }
 
     /**
@@ -69,10 +61,8 @@ public class MainScreenSignedOutTest {
      */
     @Test
     public void goToSignInPageWhenClickSignInButton() {
-        onView(withText(AppAssistant.getString(R.string.sign_in_button))).perform(click());
-        onView(withId(R.id.sign_in_activity_username_field)).check(matches(isDisplayed()));
-        onView(withId(R.id.sign_in_activity_username_field)).check(matches(isDisplayed()));
-        onView(withId(R.id.sign_in_activity_submit_button)).check(matches(isDisplayed()));
+        mainScreen.clickSignInButton();
+        signInScreen.verifyIsOnSignInScreen();
     }
 
 }

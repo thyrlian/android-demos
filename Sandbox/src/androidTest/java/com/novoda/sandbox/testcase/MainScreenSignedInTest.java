@@ -6,27 +6,14 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.novoda.sandbox.R;
 import com.novoda.sandbox.feature.main.MainActivity;
-import com.novoda.sandbox.util.AppAssistant;
-import com.novoda.sandbox.util.PackageCompanion;
+import com.novoda.sandbox.screen.DetailsScreen;
+import com.novoda.sandbox.screen.MainScreen;
 import com.novoda.sandbox.util.TestRuleHelper;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 
 /**
  * Created by jingli on 09/06/16.
@@ -39,6 +26,8 @@ public class MainScreenSignedInTest {
     @Rule
     public ActivityTestRule<MainActivity> mainActivityTestRule = TestRuleHelper.createTestRuleWithLoginState(MainActivity.class, true);
 
+    private MainScreen mainScreen = new MainScreen();
+    private DetailsScreen detailsScreen = new DetailsScreen();
     private int installedAppsCount = InstrumentationRegistry.getTargetContext().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA).size();
 
     /**
@@ -48,8 +37,8 @@ public class MainScreenSignedInTest {
      */
     @Test
     public void showAllAppsWhenSignedIn() {
-        onView(withText(AppAssistant.getString(R.string.sign_out_button))).check(matches(isDisplayed()));
-        assertEquals(installedAppsCount, PackageCompanion.getCountFromList());
+        mainScreen.verifyIsSignedIn();
+        mainScreen.verifyPackagesCount(installedAppsCount);
     }
 
     /**
@@ -60,13 +49,10 @@ public class MainScreenSignedInTest {
     @Test
     public void goToAppDetailsWhenClickApp() {
         int appPositionToClick = 1;
-        if (appPositionToClick >= installedAppsCount) {
-            appPositionToClick = 0;
-        }
-        String packageName = PackageCompanion.getTextInList(appPositionToClick);
-        onData(allOf(is(instanceOf(String.class)))).inAdapterView(withId(R.id.packages_list)).atPosition(appPositionToClick).perform(click());
-        onView(withId(R.id.details_activity_launch_application)).check(matches(isDisplayed()));
-        onView(withId(R.id.details_activity_app_pkg)).check(matches(withText(AppAssistant.getString(R.string.item_key_pkg) + " : " + packageName)));
+        String packageName = mainScreen.getPackageName(appPositionToClick);
+        mainScreen.clickPackage(appPositionToClick);
+        detailsScreen.verifyIsOnDetailsScreen();
+        detailsScreen.verifyPackageName(packageName);
     }
 
     /**
@@ -76,9 +62,9 @@ public class MainScreenSignedInTest {
      */
     @Test
     public void goToSignInPageWhenClickSignInButton() {
-        onView(withText(AppAssistant.getString(R.string.sign_out_button))).perform(click());
-        onView(withText(AppAssistant.getString(R.string.sign_in_button))).check(matches(isDisplayed()));
-        assertEquals(1, PackageCompanion.getCountFromList());
+        mainScreen.clickSignOutButton();
+        mainScreen.verifyIsSignedOut();
+        mainScreen.verifyPackagesCount(1);
     }
 
 }
