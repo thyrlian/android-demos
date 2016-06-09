@@ -87,3 +87,7 @@ Anyone of:
   - ~~some applications could not be launched (e.g. SoundRecorder)~~
 * SignInActivity
   - ~~empty space input should be trimmed off~~
+
+####TODO:
+
+* use DI to decouple dependencies (e.g.: ApplicationContext in presenters, sign in state and etc.)
