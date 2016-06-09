@@ -9,7 +9,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.novoda.sandbox.R;
 import com.novoda.sandbox.feature.main.MainActivity;
 import com.novoda.sandbox.util.AppAssistant;
-import com.novoda.sandbox.util.PackagesCounter;
+import com.novoda.sandbox.util.PackageCompanion;
 import com.novoda.sandbox.util.TestRuleHelper;
 
 import org.junit.Rule;
@@ -49,7 +49,7 @@ public class MainScreenSignedInTest {
     @Test
     public void showAllAppsWhenSignedIn() {
         onView(withText(AppAssistant.getString(R.string.sign_out_button))).check(matches(isDisplayed()));
-        assertEquals(installedAppsCount, PackagesCounter.getCount());
+        assertEquals(installedAppsCount, PackageCompanion.getCountFromList());
     }
 
     /**
@@ -63,8 +63,10 @@ public class MainScreenSignedInTest {
         if (appPositionToClick >= installedAppsCount) {
             appPositionToClick = 0;
         }
+        String packageName = PackageCompanion.getTextInList(appPositionToClick);
         onData(allOf(is(instanceOf(String.class)))).inAdapterView(withId(R.id.packages_list)).atPosition(appPositionToClick).perform(click());
         onView(withId(R.id.details_activity_launch_application)).check(matches(isDisplayed()));
+        onView(withId(R.id.details_activity_app_pkg)).check(matches(withText(AppAssistant.getString(R.string.item_key_pkg) + " : " + packageName)));
     }
 
     /**
@@ -76,7 +78,7 @@ public class MainScreenSignedInTest {
     public void goToSignInPageWhenClickSignInButton() {
         onView(withText(AppAssistant.getString(R.string.sign_out_button))).perform(click());
         onView(withText(AppAssistant.getString(R.string.sign_in_button))).check(matches(isDisplayed()));
-        assertEquals(1, PackagesCounter.getCount());
+        assertEquals(1, PackageCompanion.getCountFromList());
     }
 
 }

@@ -7,7 +7,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.novoda.sandbox.R;
 import com.novoda.sandbox.feature.main.MainActivity;
 import com.novoda.sandbox.util.AppAssistant;
-import com.novoda.sandbox.util.PackagesCounter;
+import com.novoda.sandbox.util.PackageCompanion;
 import com.novoda.sandbox.util.TestRuleHelper;
 
 import org.junit.Rule;
@@ -45,7 +45,7 @@ public class MainScreenSignedOutTest {
     @Test
     public void showOnlyOneAppWhenSignedOut() {
         onView(withText(AppAssistant.getString(R.string.sign_in_button))).check(matches(isDisplayed()));
-        assertEquals(1, PackagesCounter.getCount());
+        assertEquals(1, PackageCompanion.getCountFromList());
     }
 
     /**
@@ -55,8 +55,11 @@ public class MainScreenSignedOutTest {
      */
     @Test
     public void goToAppDetailsWhenClickApp() {
-        onData(allOf(is(instanceOf(String.class)))).inAdapterView(withId(R.id.packages_list)).atPosition(0).perform(click());
+        int position = 0;
+        String packageName = PackageCompanion.getTextInList(position);
+        onData(allOf(is(instanceOf(String.class)))).inAdapterView(withId(R.id.packages_list)).atPosition(position).perform(click());
         onView(withId(R.id.details_activity_launch_application)).check(matches(isDisplayed()));
+        onView(withId(R.id.details_activity_app_pkg)).check(matches(withText(AppAssistant.getString(R.string.item_key_pkg) + " : " + packageName)));
     }
 
     /**
