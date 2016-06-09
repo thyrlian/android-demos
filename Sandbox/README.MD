@@ -91,3 +91,5 @@ Anyone of:
 ####TODO:
 
 * use DI to decouple dependencies (e.g.: ApplicationContext in presenters, sign in state and etc.)
+* check lint issues
+* write unit tests
