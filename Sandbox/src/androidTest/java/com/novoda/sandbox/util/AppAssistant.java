@@ -12,4 +12,8 @@ public class AppAssistant {
         return InstrumentationRegistry.getTargetContext().getResources().getString(stringName);
     }
 
+    public static String getFormattedString(@StringRes int stringName, Object... args) {
+        return String.format(getString(stringName), args);
+    }
+
 }

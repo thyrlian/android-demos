@@ -1,6 +1,8 @@
 package com.novoda.sandbox.screen;
 
 import com.novoda.sandbox.R;
+import com.novoda.sandbox.feature.signin.SignInPresenter;
+import com.novoda.sandbox.util.AppAssistant;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -10,6 +12,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.not;
 
 /**
@@ -54,4 +57,16 @@ public class SignInScreen {
         clickSubmitButton();
     }
 
+    public void verifyUsernameValidationErrorIsShown() {
+        onView(withText(AppAssistant.getFormattedString(R.string.username_validation_error, SignInPresenter.MINIMUM_INPUT_LENGTH))).check(matches(isDisplayed()));
+    }
+
+    public void verifyPasswordValidationErrorIsShown() {
+        onView(withText(AppAssistant.getFormattedString(R.string.username_validation_error, SignInPresenter.MINIMUM_INPUT_LENGTH))).check(matches(isDisplayed()));
+    }
+
+    public void verifyUsernameAndPasswordValidationErrorsAreShown() {
+        verifyUsernameValidationErrorIsShown();
+        verifyPasswordValidationErrorIsShown();
+    }
 }

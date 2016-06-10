@@ -29,4 +29,29 @@ public class SignInScreenTest {
         signInScreen.verifySubmitButtonIsNotEnabled();
     }
 
+    /**
+     * Given I try and click submit
+     * When I have entered a username or password
+     * Then the submit button is clickable
+     */
+    @Test
+    public void checkSubmitButtonIsEnabledWithValidInput() {
+        signInScreen.enterUsername("root");
+        signInScreen.enterPassword("admin");
+        signInScreen.verifySubmitButtonIsEnabled();
+    }
+
+    /**
+     * Given I try and click submit
+     * When the username is less than 4 characters
+     * Then I am not allowed to sign in
+     */
+    @Test
+    public void checkSubmitButtonIsNotEnabledWithInvalidUsername() {
+        signInScreen.enterUsername("god");
+        signInScreen.enterPassword("admin");
+        signInScreen.clickSubmitButton();
+        signInScreen.verifyUsernameValidationErrorIsShown();
+    }
+
 }
