@@ -2,6 +2,7 @@ package com.novoda.sandbox.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 
 import com.novoda.sandbox.SandboxApplication;
@@ -30,8 +31,8 @@ public class TestRuleHelper<T extends Activity> {
         };
     }
 
-    public static ActivityTestRule<DetailsActivity> createTestRuleForDetailsActivity(final String packageName) {
-        return new ActivityTestRule<DetailsActivity>(DetailsActivity.class) {
+    public static IntentsTestRule<DetailsActivity> createTestRuleForDetailsActivity(final String packageName) {
+        return new IntentsTestRule<DetailsActivity>(DetailsActivity.class) {
             @Override
             protected Intent getActivityIntent() {
                 return DetailsPresenter.createIntent(packageName);

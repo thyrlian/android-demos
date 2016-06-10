@@ -14,8 +14,10 @@ import org.junit.Test;
  */
 public class DetailsScreenTest {
 
+    private String packageName = "com.android.browser";
+
     @Rule
-    public ActivityTestRule<DetailsActivity> detailsActivityTestRule = TestRuleHelper.createTestRuleForDetailsActivity("com.android.browser");
+    public ActivityTestRule<DetailsActivity> detailsActivityTestRule = TestRuleHelper.createTestRuleForDetailsActivity(packageName);
 
     private DetailsScreen detailsScreen = new DetailsScreen();
 
@@ -26,7 +28,7 @@ public class DetailsScreenTest {
      */
     @Test
     public void testExternalAppCanBeOpened() {
-        detailsScreen.clickLaunchAppButton();
+        detailsScreen.clickLaunchAppButton(packageName);
     }
 
 }
