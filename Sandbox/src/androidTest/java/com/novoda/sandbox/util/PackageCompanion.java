@@ -1,19 +1,20 @@
 package com.novoda.sandbox.util;
 
-import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
+import android.widget.ListView;
 
 import com.novoda.sandbox.R;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
@@ -33,26 +34,19 @@ public class PackageCompanion {
 
     public static int getCountFromList() {
         count = 0;
+        Matcher matcher = new TypeSafeMatcher<View>() {
+            @Override
+            protected boolean matchesSafely(View item) {
+                count = ((ListView) item).getCount();
+                return true;
+            }
 
-        Matcher<Object> matcher = new BoundedMatcher<Object, String>(String.class) {
             @Override
             public void describeTo(Description description) {
             }
-
-            @Override
-            protected boolean matchesSafely(String item) {
-                count += 1;
-                return true;
-            }
         };
 
-        DataInteraction dataInteraction = onData(matcher).inAdapterView(withId(listViewId));
-        try {
-            // do a nonsense operation with no impact
-            // because ViewMatchers would only start matching when action is performed on DataInteraction
-            dataInteraction.perform(typeText(""));
-        } catch (Exception e) {
-        }
+        onView(withId(listViewId)).check(matches(matcher));
 
         int result = count;
         count = 0;
